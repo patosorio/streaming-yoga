@@ -1,0 +1,110 @@
+body{
+    background: url('/media/img/hero.jpeg') no-repeat center top fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+    font-size: 16px;
+}
+
+
+.opaque-overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(243, 245, 244, 0.4);
+}
+
+header{
+    background-color: #01016F;
+}
+
+.mobile-nav{
+    background-color: #01016F;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: white!important;
+    padding: 15px;
+}
+
+.dropdown-menu{
+    background-color: #01016F;
+    
+}
+
+.dropdown-item{
+    font-family: "Lato";
+    font-weight: 100;
+    text-decoration: none;
+    color: white;
+}
+
+a.logo{
+    font-family: Poiret One, cursive;
+    font-size: 3rem;
+    text-decoration: none;
+    color: white;
+}
+
+.input-group>.form-control:not(:last-child) {
+    background-color: transparent;
+}
+
+input::placeholder {
+    color: white!important;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+}
+
+.icon-description{
+    font-family: "Lato";
+    font-weight: 100;
+    text-decoration: none;
+    color: white;
+}
+
+a.nav-link.menu-item {
+    font-family: "Lato";
+    font-weight: 300;
+    text-decoration: none;
+    color: white;
+}
+
+.jumbotron-wrapper{
+    position: relative;
+    height: 100vh;
+}
+
+.jumbotron {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background:rgba(243, 245, 244, 0.4);
+}
+
+.jumbotron p{
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    margin: 0;
+    padding: 0;
+}
+
+.jumbotron p, h1{
+    color: #01016F;
+}
+
+
+a.btn.signup{
+    padding: 10px 20px;
+    background-color: #01016F;
+    color: white;
+    margin-top: 15px; 
+}
+

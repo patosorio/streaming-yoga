@@ -1,0 +1,57 @@
+<li class="list-inline-item">
+    <a href="" class="nav-link d-block d-lg-none" href="#" id="mobile-search" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="text-center">
+            <div><i class="fas fa-search text-light"></i></div>
+            <p class="icon-description">Search</p>
+        </div>
+    </a>
+    <div class="dropdown-menu border-0 w-100 p-3 rounded-0 my-0" aria-labelledby="mobile-search">
+        <form action="" class="form" method="GET">
+            <div class="input-group w-100">
+                <input type="text" class="form-control" type="text" name="q" placeholders="Search">
+                <div class="input-group-append">
+                    <button class="form-control form-control btn" type="submit">
+                        <span class="icon">
+                            <i class="fas fa-search"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</li>
+<li class="list-inline-item dropdown">
+    <a href="#" id="user-app" class="nav-link d-block d-lg-none" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="text-center">
+            <div><i class="fas fa-user text-light"></i></div>
+            <p class="icon-description">User Account</p>
+        </div>
+    </a>
+    <div class="dropdown-menu" aria-labelledby="user-app">
+        {% if request.user.is_authenticated %}
+            {% if request.user.is_superuser %}
+            <a href="#" class="dropdown-item">Subscription Management</a>
+            <a href="#" class="dropdown-item">Product Management</a>
+            {% endif %}
+            <a href="#" class="dropdown-item">My Profile</a>
+            <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>
+        {% else %}
+            <a href="{% url 'account_signup' %}" class="dropdown-item">Subscribe</a>
+            <a href="{% url 'account_login' %}" class="dropdown-item">Login</a>
+        {% endif %}
+    </div>
+</li>
+<li class="list-inline-item">
+    <a class="nav-link d-block d-lg-none {% if grand_total %} text-light font-weight-bold {% else %} text-light {% endif %}">
+        <div>
+            <div><i class="fas fa-shopping-bag text-light"></i></div>
+            <p class="icon-description">
+                {% if grand_total %}
+                    ${{ grand_total|floatformat:2 }}
+                {% else %}
+                    $0.00
+                {% endif %}
+            </p>
+        </div>
+    </a>
+</li>
