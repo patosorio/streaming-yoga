@@ -3,7 +3,9 @@ videos.Video.thumbnail: (fields.E210) Cannot use ImageField because Pillow is no
 
         installed pillows
 
+features to add: sort by 
 
+https://bbbootstrap.com/snippets/bootstrap-simple-pricing-comparison-table-44330522
 
 ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 

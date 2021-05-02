@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib import messages
 from django.db.models import Q
+from django.db.models.functions import Lower
 
 from .models import Video, Category
 
@@ -23,12 +24,13 @@ def all_videos(request):
             if sortkey == 'name':
                 sortkey = 'lower_name'
                 videos = videos.annotate(lower_name=Lower('name'))
+            if sortkey == 'category':
+                sortkey = 'category__name'
             if 'direction' in request.GET:
                 direction = request.GET['direction']
                 if direction == 'desc':
                     sortkey = f'-{sortkey}'
             videos = videos.order_by(sortkey)
-
 
         if 'category' in request.GET:
             categories = request.GET['category'].split(',')
@@ -66,3 +68,4 @@ def video_detail(request, video_id):
     }
 
     return render(request, 'video_detail.html', context)
+    
