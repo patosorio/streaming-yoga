@@ -6,6 +6,7 @@ body{
     background-size: cover;
 
     font-size: 16px;
+    font-family: "Lato", sans-serif;
 }
 
 
@@ -16,6 +17,16 @@ body{
     height: 100%;
     width: 100%;
     background-color: rgba(243, 245, 244, 0.4);
+}
+
+.overlay{
+    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    background-color: white;
 }
 
 header{
@@ -89,6 +100,10 @@ a.nav-link.menu-item {
     background:rgba(243, 245, 244, 0.4);
 }
 
+.page-wrapper{
+    margin-top: 150px;
+}
+
 .jumbotron p{
     font-family: 'Lato', sans-serif;
     font-weight: 300;
@@ -107,4 +122,11 @@ a.btn.signup{
     color: white;
     margin-top: 15px; 
 }
+
+h2.titles{
+    text-transform: uppercase;
+    font-weight: 400;
+    color: #01016F;
+}
+
 
