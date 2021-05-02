@@ -26,18 +26,18 @@
                     {% for video in videos %}
                     <div class="col">
                         <div class="card h-100">
-                          <img src="{{ video.video_url }}" class="card-img-top" alt="Ashtanga Video - 01">
+                          <img src="#" class="card-img-top" alt="Ashtanga Video - 01">
                           <div class="card-body">
-                            <h5 class="card-title">{{ video }}</h5>
-                            <p class="card-text">{{ video.description }}</p>
+                            <a href="{% url 'video_detail' video.id %}">   
+                                <h5 class="card-title">{{ video }}</h5>
+                                <p class="card-text">{{ video.description }}</p>
+                            </a> 
                           </div>
                         </div>
                     </div>
                     {% endfor %}
-                    
                 </div>
             </div>
-
         </div> 
     </div>
     {% endblock %}

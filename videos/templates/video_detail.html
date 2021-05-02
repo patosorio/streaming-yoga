@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+    {% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col">HELLO</div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block content %}
+    <div class="overlay"></div>
+    <div class="container page-wrapper">
+        <div class="row">
+            <div class="col text-center">
+                <h2 class="titles">{{ video.title }}</h2>
+                <hr style="height:1px;border: width 2px;color:#01016F;;background-color:#01016F;">
+            </div>
+        </div> 
+        
+        <div class="row">
+            <div class="col text-center">
+                <p>{{ video.description }}</p>
+                <ul class="list-inline">
+                    <li class="list-inline-item">
+                    </li>
+                    <li class="list-inline-item">
+                    </li>
+                    <li class="list-inline-item">
+                    </li>
+                    <li class="list-inline-item">
+                        
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
