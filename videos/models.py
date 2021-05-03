@@ -1,5 +1,4 @@
 from django.db import models
-from membership.models import Membership
 
 
 class Category(models.Model):
@@ -19,7 +18,6 @@ class Category(models.Model):
 
 class Video(models.Model):
     category = models.ManyToManyField(Category)
-    membership = models.ManyToManyField(Membership)
     title = models.CharField(max_length=300)
     description = models.TextField()
     duration = models.DurationField(null=True, blank=True)
