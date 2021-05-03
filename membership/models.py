@@ -3,10 +3,21 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-class user_membership(models.Model):
+class Membership(models.Model):
+    id = models.CharField(max_length=254, blank=True, primary_key=True)
+    name = models.CharField(max_length=20)
+    price = models.IntegerField(default=0)
+    subscription_type = models.CharField(max_length=254, blank=True)
+
+    def __str__(self):
+        return self.subscription_type
+
+
+class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    stripe_id = models.CharField(max_length=260)
-    stripe_subscription_id = models.CharField(max_length=260)
-    cancel_at_end = models.BooleanField(default=False)
-    membership = models.BooleanField(default=False)
+    stripeid = models.CharField(max_length=255)
+    stripe_subscription_id = models.CharField(max_length=255)
+    cancel_at_period_end = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
+    membership = models.ForeignKey(Membership, null=False, blank=False, on_delete=models.CASCADE)
 

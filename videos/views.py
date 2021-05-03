@@ -64,19 +64,8 @@ def video_detail(request, video_id):
 
     video = get_object_or_404(Video, id=video_id)
 
-    user_membership = UserMembership.objects.filter(user=request).first() or None
-    
-    if user_membership:
-        user_member_type = user_membership.membership.type_member
-
-        allowed_videos = video.allowed_videos.all()
-
-    context = {
-        'video': None,
-    }
-
-    if allowed_videos.filter(type_member=user_member_type):
-        context = {"video": video}
+    context = {"video": video}
 
     return render(request, 'video_detail.html', context)
     
+

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+    {% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col">HELLO</div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block content %}
+    <div class="container page-wrapper">
+        <div class="row">
+            <div class="col text-center">
+                <h2 class="titles">Checkout</h2>
+                <hr style="height:1px;border: width 2px;color:#01016F;;background-color:#01016F;">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-12 col-lg-6 text-center">
+                <div class="row">
+                    <div class="col-8">
+                        <p>Item</p>
+                    </div>
+                    <div class="col-4">
+                        <p>Subtotal</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <p>Please, fill out the form:</p>
+                <form action="{% url 'checkout' %}" method="POST" id="payment-form">
+                    {% csrf_token %}
+                    <fieldset class="rounded">
+                        {{ order_form.full_name | as_crispy_field }}
+                        {{ order_form.email | as_crispy_field }}
+                    </fieldset>
+                    <fieldset class="rounded">
+                        <div class="div" id="card-element"></div>
+                        <div class="div" id="card-errors" role="alert"></div>
+                    </fieldset>
+                    <div class="submit-button">
+                        <button id="submit-button" class="btn btn-dark rounded-0">
+                            <span class="font-weight-bold">Complete Order</span>
+                            
+                        </button>
+                        <p class="small">
+                            <span>Your card will be charged {{ order_total|floatformat:2 }}</span>
+                        </p>
+                    </div>
+                </form>
+            </div>   
+        </div>
+    </div>
+    {% endblock %}
+
+
+
+
+{% block postload %}
