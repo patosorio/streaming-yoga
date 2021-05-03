@@ -5,12 +5,19 @@ from .forms import OrderForm
 from .models import Order, OrderLineItem, Customer
 import stripe
 
-
-
 def checkout(request, membership_type):
-    
-    stripe.api_key = "pk_test_51ImzTfGFCpq2XfOb6Bpz00D7omwfZVYzsc48m2gCyuBWqCssVyl1aW5ZL6COJBXBTM6VSFRKNPJFEmm9QBJ7dfJQ00B9WvNlP6"
-    
+
+    order_form = OrderForm()
+    template = "checkout.html"
+    context = {
+        'order_form': order_form,
+        'stripe_public_key': 'pk_test_51ImzTfGFCpq2XfOb6Bpz00D7omwfZVYzsc48m2gCyuBWqCssVyl1aW5ZL6COJBXBTM6VSFRKNPJFEmm9QBJ7dfJQ00B9WvNlP6',
+        'client_secret': "test secret client"
+    }
+    return render(request, template, context)
+
+
+def pay(request):
     if membership_type != 'Monthly':
         membership_id = 'prod_JPpLp6Qm7n2H4F'
     else:
@@ -30,7 +37,6 @@ def checkout(request, membership_type):
             client_reference_id=request.user,         
         )
         return render(request, 'checkout.html', {'session_id': session.id})  
-    return render(request, 'checkout.html')
 
 
 def success(request):
