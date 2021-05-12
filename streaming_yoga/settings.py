@@ -22,6 +22,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-!$di&9vo53lfl_lufeo0w^0mi+q^xg@z3(7zgsuias8yw85jui'
 
+STRIPE_TEST_PUBLIC_KEY = os.environ.get("STRIPE_TEST_PUBLIC_KEY", "pk_test_51ImzTfGFCpq2XfOb6Bpz00D7omwfZVYzsc48m2gCyuBWqCssVyl1aW5ZL6COJBXBTM6VSFRKNPJFEmm9QBJ7dfJQ00B9WvNlP6")
+STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY", "sk_test_51ImzTfGFCpq2XfObv3gDkIbrWu9EapIOodZVkP86QduSLiGISI2kLFoQxkYrmWdPxWKsmjA2vdtZNPTsxYt3cdWO00BilIexc1")
+STRIPE_LIVE_MODE = False
+DJSTRIPE_WEBHOOK_SECRET = "whsec_xxx"  # We don't use this, but it must be set
+# HINT: Set DJSTRIPE_FOREIGN_KEY_TO_FIELD to "id" if this is a new installation, otherwise set it to "djstripe_id".
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
+# HINT: On Django 3.1+, setting DJSTRIPE_USE_NATIVE_JSONFIELD = True is recommended.
+DJSTRIPE_USE_NATIVE_JSONFIELD = True
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -50,6 +59,7 @@ INSTALLED_APPS = [
     # django crispy forms
 
     'crispy_forms',
+    'djstripe',
 ]
 
 MIDDLEWARE = [

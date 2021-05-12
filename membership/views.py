@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, reverse, HttpResponse, get_object_or_404
+from django.shortcuts import render, redirect, reverse, HttpResponse
 from .models import Membership
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -15,30 +15,3 @@ def all_memberships(request):
     return render(request, "memberships.html", context)
 
 
-def add_to_checkout(request, subscription_type):
-
-    membership = get_object_or_404(Membership, subscription_type=subscription_type)
-
-    print(membership)
-
-    context = {"membership": membership}
-
-    return render(request, 'checkout.html', context)
-
-
-"""
-def add_to_checkout(request, membership_id):
-    print("something")
-    membership = get_object_or_404(Membership)
-    context = {
-        "membership_id": membership.id
-    }
-    return render(request, "memberships.html", context)
-
-
-    membership = get_object_or_404(Membership, membership_id=membership.id) 
-    cart = request.session.get('cart', {})
-    cart = membership
-    request.session['cart'] = cart
-    print(request.session['cart'])
-"""

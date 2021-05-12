@@ -31,7 +31,6 @@
                             <!-- add this to membership model as href button <a> in each card?
                                 {% url 'checkout' %}?membership=monthly
                             <input type="submit" class="btn btn-black rounded-0 btn-lg" value="Secure Checkout"> -->
-                        {% csrf_token %}
                             <div class="pricing-card p-3 text-center py-5 mt-2 bg-white rounded">
                                 <div class="images"><img src="" width="50"></div>
                                 <h6 class="mt-3">{{ membership.subscription_type }}</h6><span class="d-block font-weight-bold mt-3">{{ membership.price }}</span><span class="d-block">PER MONTH</span>
