@@ -3,12 +3,12 @@ from django.contrib import messages
 from django.db.models import Q
 from django.db.models.functions import Lower
 from .models import Video, Category
-
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
 
-
+@login_required
 def all_videos(request):
     """ A view to show all videos, including sorting and search queries """
 
@@ -67,5 +67,3 @@ def video_detail(request, video_id):
     context = {"video": video}
 
     return render(request, 'video_detail.html', context)
-    
-

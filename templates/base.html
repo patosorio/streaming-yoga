@@ -18,7 +18,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poiret+One&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="{% static 'css/base.css' %}">
-        {% endblock%}
+        {% endblock %}
 
         {% block corejs %}
         <script src="https://kit.fontawesome.com/392ae530c6.js" crossorigin="anonymous"></script>
@@ -58,13 +58,12 @@
                     <div class="logo-wrapper mt-3"><a href="{% url 'home' %}" class="logo">streaming yoga</a></div>
                 </div>
                 <div class="d-none col-lg-4 d-lg-flex justify-content-lg-end"> 
-                    <ul class="list-inline list-unstyled text-lg-right mt-3">
-                    
+                    <ul class="list-inline list-unstyled text-lg-right mt-3">    
                         <li class="list-inline-item">
-                            <a class="nav-link">
+                            <a class="nav-link" href="{% url 'videos' %}">
                                 <div class="text-right">
                                     <i class="fas fa-video fa-lg text-light"></i>
-                                    <p class="icon-description">Video Lib</p>
+                                    <p class="icon-description">PREMIUM</p>
                                 </div>            
                             </a>
                         </li>
@@ -84,24 +83,10 @@
                                     <a href="#" class="dropdown-item">My Profile</a>
                                     <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>
                                 {% else %}
-                                    <a href="{% url 'account_signup' %}" class="dropdown-item">Subscribe</a>
+                                    <a href="{% url 'account_signup' %}" class="dropdown-item">Sign Up</a>
                                     <a href="{% url 'account_login' %}" class="dropdown-item">Login</a>
                                 {% endif %}
                             </div>   
-                        </li>
-                        <li class="list-inline-item">
-                            <a class="{% if grand_total %} text-light font-weight-bold {% else %} text-light {% endif %}nav-link" href="#">
-                                <div>
-                                    <i class="fas fa-shopping-bag fa-lg text-light"></i>
-                                    <p class="my-0 icon-description">
-                                        {% if grand_total %}
-                                            ${{ grand_total|floatformat:2 }}
-                                        {% else %}
-                                            $0.00
-                                        {% endif %}
-                                    </p>
-                                </div>
-                            </a>
                         </li>
                     </ul>                  
                 </div>

@@ -31,30 +31,24 @@
                 
             </div>
             <div class="col-12 col-lg-4 text-center">
-                <form action="{% url 'checkout' %}" method="POST" id="payment-form">
-                    {% csrf_token %}
-                    <fieldset class="rounded px-3 mb-5">
-                        <legend class="fieldset-label small text-black px-2 w-auto">Details</legend>
-                        {{ order_form.email | as_crispy_field }}
-                    </fieldset>
-                    <fieldset class="rounded px-3 mb-5">
-                        <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
+                <fieldset class="rounded px-3 mb-5">
+                    <legend class="fieldset-label small text-black px-2 w-auto">Details</legend>
+                    <input type="text" value="name" name="name" id="name" placeholder="Your Full Name">
+                    <input type="text" value="{{ user.email }}" name="email" id="email" readonly>
+                    <input type="text" value="{{ membership.name }}" name="slectedMembership" id="selectedMembership" readonly>
+                    <input type="hidden" value="{% for plan in membership.plan_set.all %}{{ plan.id }}{% endfor %}" name="planId" id="planId" readonly>    
+                </fieldset>
+                <fieldset class="rounded px-3 mb-5">
+                    <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
                         <!-- A stripe card element will go here -->
                         <div class="mb-3" id="card-element"></div>
 
                         <!-- Used to display form errors -->
-                        <div class="mb-3" id="card-errors" role="alert"></div>
-
-                        <button type="submit">Subscribe</button>
-                        <span>Your card will be charged ${{ grand_total|floatformat:2 }}</span>
-                    </fieldset>
-
-                </form>
-
-
-                
-            </div>
-            
+                        <div class="mb-3" id="card-errors" role="alert"></div>       
+                    <span class="small">Your card will be charged ${% for plan in membership.plan_set.all %}{{ plan.amount }} {{ plan.currency }}{% endfor %}</span>
+                </fieldset>
+                <button id="subscribe">Subscribe</button>
+            </div>     
         </div>
     </div>
     {% endblock %}
