@@ -7,26 +7,23 @@
     http://stripe.com/docs/stripe-js
 
 */
-
-function createCustomer() {
-    let billingEmail = document.querySelector('#email').value;
-    return fetch('/checkout/create-customer', {
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            email: billingEmail,
-        }),
-    })
-    .then((response) => {
-        return response.json();
-    })
-    .then((result) => {
-        // result.customer.id is used to map back to the customer object
-        return result;
-    });
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
+const csrftoken = getCookie('csrftoken');
+
 
 let stripe = Stripe("pk_test_51ImzTfGFCpq2XfOb6Bpz00D7omwfZVYzsc48m2gCyuBWqCssVyl1aW5ZL6COJBXBTM6VSFRKNPJFEmm9QBJ7dfJQ00B9WvNlP6");
 let elements = stripe.elements();
@@ -54,114 +51,85 @@ card.on('change', function (event) {
 // stripe-elements js function that validates user input as it is typed
 
 function displayError(event) {
-    changeLoadingStatePrices(false);
     let displayError = document.getElementById('card-element-errors');
+    console.log(event);
+}
+
+
+function planSelect(name, price, priceId) {
+    var inputs = document.getElementsByTagName('input');
+    // loop over the inputs and find one that has same name value
+    for(var i = 0; i<inputs.length; i++){
+      inputs[i].checked = false;
+      if(inputs[i].name== name){
+
+        inputs[i].checked = true;
+      }
+    }
+
+    var n = document.getElementById('plan');
+    var p = document.getElementById('price');
+    var pid = document.getElementById('priceId');
+    n.innerHTML = name;
+    p.innerHTML = price;
+    pid.innerHTML = priceId;
+        document.getElementById("subscribe").disabled = false;
+}
+
+let paymentForm = document.getElementById('subscription-form');
+    if (paymentForm) {
+        paymentForm.addEventListener('submit', function (evt) {
+        evt.preventDefault();
+        // create new payment method & create subscription
+        createPaymentMethod({ card });
+    });
+}
+
+function createPaymentMethod({ card }) {
+
+// Set up payment method for recurring usage
+let billingName = '{{user.username}}';
+
+stripe
+    .createPaymentMethod({
+        type: 'card',
+        card: card,
+        billing_details: {
+            name: billingName,
+        },
+    }).then((result) => {
+        if (result.error) {
+            displayError(result);
+        } else {
+            const paymentParams = {
+            price_id: document.getElementById("priceId").innerHTML,
+            payment_method: result.paymentMethod.id,
+    };
     
+    fetch("/checkout/create_subscription", {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify(paymentParams),
+    }).then((response) => {
+        return response.json(); 
+    }).then((result) => {
+        if (result.error) {
+        // The card had an error when trying to attach it to a customer
+            throw result;
+        }
+        return result;
+    }).then((result) => {
+        if (result && result.status === 'active') {
+            window.location.href = '/complete';
+        };
+    }).catch(function (error) {
+        displayError(error);
+    });
+    }
+    });
 }
-
-
-// save payment details to create subscription in our backend
-
-var form = document.getElementById('subscription-form');
-
-form.addEventListener('submit', function (ev) {
-  ev.preventDefault();
-  createCustomer();
-  createPaymentMethod(card);
-});
-
-function createPaymentMethod(card) {
-    const customerId = result.customer.id;
-    // Set up payment method for recurring usage
-    let billingName = document.querySelector('#name').value;
-
-    let planId = document.getElementById('planId').innerHTML;
-
-    stripe
-        .createPaymentMethod({
-            type: 'card',
-            card: card,
-            billing_details: {
-              name: billingName,
-            },
-        })
-        .then((result) => {
-            if (result.error) {
-                displayError(result);
-            } else {
-                createSubscription({
-                  customerId: customerId,
-                  paymentMethodId: result.paymentMethod.id,
-                  planId: planId,
-                });
-            }
-        });
-}
-
-/* createSubscription Define function:
-    passing: 
-        customer
-        payment method
-        planId (priceId)
-*/
-
-function createSubscription(customerId, paymentMethodId, planId) {
-    return (
-        fetch('/create_subscription', {
-            method: 'post',
-            headers: {
-              'Content-type': 'application/json',
-            },
-            body: JSON.stringify({
-              customerId: customerId,
-              paymentMethodId: paymentMethodId,
-              planId: planId,
-            }),
-        })
-        .then((response) => {
-            return response.json();
-        })
-        // If the card is declined, display an error to the user.
-        .then((result) => {
-            if (result.error) {
-                // The card had an error when trying to attach it to a customer.
-                throw result;
-            }
-            return result;
-        })
-        // Normalize the result to contain the object returned by Stripe.
-        // Add the additional details we need.
-        .then((result) => {
-            return {
-                paymentMethodId: paymentMethodId,
-                planId: planId,
-                subscription: result,
-            };
-        })
-        // Some payment methods require a customer to be on session
-        // to complete the payment process. Check the status of the
-        // payment intent to handle these actions.
-        .then(handlePaymentThatRequiresCustomerAction)
-        // If attaching this card to a Customer object succeeds,
-        // but attempts to charge the customer fail, you
-        // get a requires_payment_method error.
-        .then(handleRequiresPaymentMethod)
-        // No more actions required. Provision your service for the user.
-        .then(onSubscriptionComplete)
-        .catch((error) => {
-          // An error has happened. Display the failure to the user here.
-          // We utilize the HTML element we created.
-          showCardError(error);
-        })
-    );
-}
-
-/*
-  Verify the subscription status is active
-  check the product customer subscribed to and grant access to the video service
-*/
-
-
-
-
-
+  

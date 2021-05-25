@@ -66,8 +66,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'streaming_yoga.urls'
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

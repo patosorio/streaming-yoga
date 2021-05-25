@@ -19,35 +19,50 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12 col-lg-4 order-lg-last text-center">
+            <div class="col-12 d-lg-block col-lg-10 offset-lg-3">
                 <div class="row">
-                    <div class="col-7 text-right">
-                        <p>Membership Name</p>
+                    {% for mem in membership %}
+                    <div class="col-6 col-lg-4">
+                        <div class="pricing-card p-3 text-center py-5 mt-2 bg-white rounded">
+                            <div class="images"><img src="" width="50"></div>
+                            <h6 class="mt-3">{{ mem.name }}</h6>
+                            {% for plan in mem.plan_set.all %}
+                            <div>
+                                <span class="d-block font-weight-bold mt-3">{{ plan.amount }}</span><span class="d-block">{{ plan.currency }}</span>
+                                <a href="{% url 'checkout' %}?membership={{ plan.nickname }}" class="btn btn-black rounded-0 btn-lg">CHECKOUT</a>
+                                <input type="checkbox" name="{{plan.nickname}}" value="{{plan.nickname}}" onclick="planSelect('{{plan.nickname}}' ,'{{plan.human_readable_price}}', '{{plan.id}}')">
+                                <div class="mt-3"><span class="d-block"><i class="fa fa-check"></i>&nbsp;{{ membership.description }}</span><span class="text-left"><i class="fa fa-check"></i>&nbsp;Access to some content</span></div>
+                            </div>
+                            {% endfor %}           
+                        </div>
                     </div>
-                    <div class="col-3 text-right">
-                        <p>Total</p>
-                    </div>
+                    {% endfor %}
                 </div>
-                
             </div>
-            <div class="col-12 col-lg-4 text-center">
-                <fieldset class="rounded px-3 mb-5">
-                    <legend class="fieldset-label small text-black px-2 w-auto">Details</legend>
-                    <input type="text" value="name" name="name" id="name" placeholder="Your Full Name">
-                    <input type="text" value="{{ user.email }}" name="email" id="email" readonly>
-                    <input type="text" value="{{ membership.name }}" name="slectedMembership" id="selectedMembership" readonly>
-                    <input type="hidden" value="{% for plan in membership.plan_set.all %}{{ plan.id }}{% endfor %}" name="planId" id="planId" readonly>    
-                </fieldset>
-                <fieldset class="rounded px-3 mb-5">
-                    <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
-                        <!-- A stripe card element will go here -->
-                        <div class="mb-3" id="card-element"></div>
-
-                        <!-- Used to display form errors -->
-                        <div class="mb-3" id="card-errors" role="alert"></div>       
-                    <span class="small">Your card will be charged ${% for plan in membership.plan_set.all %}{{ plan.amount }} {{ plan.currency }}{% endfor %}</span>
-                </fieldset>
-                <button id="subscribe">Subscribe</button>
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg-8 text-center">
+                <form id="subscription-form">
+                    <fieldset class="rounded px-3 mb-5">
+                        <legend class="fieldset-label small text-black px-2 w-auto">Details</legend>
+                        <p id="name">{{ user.username }}</p>
+                        <p id="email">{{ user.email }}</p>
+                        <p id="plan"></p>
+                        <p id="price"></p>
+                        <p hidden id="priceId"></p>
+                        <input type="hidden" value="{% for plan in membership.plan_set.all %}{{ plan.id }}{% endfor %}" name="planId" id="planId" readonly>    
+                    </fieldset>
+                    <fieldset class="rounded px-3 mb-5">
+                        <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
+                            <!-- A stripe card element will go here -->
+                            <div class="mb-3" id="card-element"></div>
+    
+                            <!-- Used to display form errors -->
+                            <div class="mb-3" id="card-errors" role="alert"></div>       
+                        <span class="small">Your card will be charged ${% for plan in membership.plan_set.all %}{{ plan.amount }} {{ plan.currency }}{% endfor %}</span>
+                    </fieldset>
+                    <button type="submit" id="subscribe">Subscribe</button>
+                </form> 
             </div>     
         </div>
     </div>

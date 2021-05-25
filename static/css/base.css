@@ -4,7 +4,7 @@ body{
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-
+    background-color: white;
     font-size: 16px;
     font-family: "Lato", sans-serif;
 }
