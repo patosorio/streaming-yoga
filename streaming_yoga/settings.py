@@ -178,8 +178,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STRIPE_PUBLIC_KEY = os.getenv("STRIPE_PUBLIC_KEY", "")
 STRIPE_TEST_SECRET_KEY = os.getenv("STRIPE_TEST_SECRET_KEY", "")
 STRIPE_LIVE_MODE = False
+STRIPE_WH_SECRET = os.getenv('STRIPE_WH_SECRET', "")
+
+#djStripe
+
 DJSTRIPE_WEBHOOK_SECRET = "whsec_xxx"  # We don't use this, but it must be set
 # HINT: Set DJSTRIPE_FOREIGN_KEY_TO_FIELD to "id" if this is a new installation, otherwise set it to "djstripe_id".
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 # HINT: On Django 3.1+, setting DJSTRIPE_USE_NATIVE_JSONFIELD = True is recommended.
 DJSTRIPE_USE_NATIVE_JSONFIELD = True
+
+

@@ -79,57 +79,58 @@ function planSelect(name, price, priceId) {
 let paymentForm = document.getElementById('subscription-form');
     if (paymentForm) {
         paymentForm.addEventListener('submit', function (evt) {
-        evt.preventDefault();
-        // create new payment method & create subscription
-        createPaymentMethod({ card });
-    });
-}
+            evt.preventDefault();
+            card.update({ 'disabled': true});
+            $().attr('#subscribe').attr('disabled', true)
+            // create new payment method & create subscription
+            createPaymentMethod({ card });
+        });
+    }
 
 function createPaymentMethod({ card }) {
-
 // Set up payment method for recurring usage
-let billingName = '{{user.username}}';
+    let billingName = '{{user.username}}';
 
-stripe
-    .createPaymentMethod({
-        type: 'card',
-        card: card,
-        billing_details: {
-            name: billingName,
-        },
-    }).then((result) => {
-        if (result.error) {
-            displayError(result);
-        } else {
-            const paymentParams = {
-            price_id: document.getElementById("priceId").innerHTML,
-            payment_method: result.paymentMethod.id,
-    };
-    
-    fetch("/checkout/create_subscription", {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': csrftoken
-        },
-        credentials: 'same-origin',
-        body: JSON.stringify(paymentParams),
-    }).then((response) => {
-        return response.json(); 
-    }).then((result) => {
-        if (result.error) {
-        // The card had an error when trying to attach it to a customer
-            throw result;
-        }
-        return result;
-    }).then((result) => {
-        if (result && result.status === 'active') {
-            window.location.href = '/complete';
+    stripe
+        .createPaymentMethod({
+            type: 'card',
+            card: card,
+            billing_details: {
+                name: billingName,
+            },
+        }).then((result) => {
+            if (result.error) {
+                displayError(result);
+            } else {
+                const paymentParams = {
+                price_id: document.getElementById("priceId").innerHTML,
+                payment_method: result.paymentMethod.id,
         };
-    }).catch(function (error) {
-        displayError(error);
-    });
-    }
-    });
+        
+        fetch("/checkout/create_subscription", {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+            },
+            credentials: 'same-origin',
+            body: JSON.stringify(paymentParams),
+        }).then((response) => {
+            return response.json(); 
+        }).then((result) => {
+            if (result.error) {
+            // The card had an error when trying to attach it to a customer
+                throw result;
+            }
+            return result;
+        }).then((result) => {
+            if (result && result.status === 'active') {
+                window.location.href = '/complete';
+            };
+        }).catch(function (error) {
+            displayError(error);
+        });
+        }
+        });
 }
   

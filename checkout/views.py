@@ -7,7 +7,7 @@ from django.shortcuts import (
 )
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
-from djstripe.models import Product
+from djstripe.models import Product, Customer, Subscription
 
 
 @login_required
@@ -35,12 +35,13 @@ def create_subscription(request):
 
         data = json.loads(request.body)
         payment_method = data['payment_method']
-        stripe.api_key = djstripe.settings.STRIPE_SECRET_KEY
+        stripe.api_key = djstripe.settings.STRIPE_TEST_SECRET_KEY
 
         payment_method_obj = stripe.PaymentMethod.retrieve(payment_method)
         djstripe.models.PaymentMethod.sync_from_stripe_data(payment_method_obj)
         print("post")
         # create a new customer to attach to the user later
+
         try:
             customer = stripe.Customer.create(
                 payment_method=payment_method,
@@ -64,10 +65,13 @@ def create_subscription(request):
             )
             print(subscription)
             djstripe_subscription = djstripe.models.Subscription.sync_from_stripe_data(subscription)
-
             request.user.subscription = djstripe_subscription
+          
             request.user.save()
 
             return JsonResponse(subscription)
         except Exception as e:
             return JsonResponse({'error': (e.args[0])}, status=403)
+
+        print("Success")
+        return HttpResponse(status=200)
