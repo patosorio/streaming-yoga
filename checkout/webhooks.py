@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from checkout.webhook_handler import StripeWH_Handler
 
 import stripe
+import json
 
 
 @require_POST
@@ -31,17 +32,24 @@ def webhook(request):
     except Exception as e:
         return HttpResponse(content=e, status=400)
 
-    # Handle the event
-    if event.type == 'payment_intent.succeeded':
-        payment_intent = event.data.object # contains a stripe.PaymentIntent
-        # Then define and call a method to handle the successful payment intent.
-        # handle_payment_intent_succeeded(payment_intent)
-    elif event.type == 'payment_method.attached':
-        payment_method = event.data.object # contains a stripe.PaymentMethod
-        # Then define and call a method to handle the successful attachment of a PaymentMethod.
-        # handle_payment_method_attached(payment_method)
-    # ... handle other event types
-    else:
-        print('Unhandled event type {}'.format(event.type))
+    # Set up a webhook handler:
+    handler = StripeWH_Handler(request)
 
-    return HttpResponse(status=200)
+    # Map webhook events to relevant handler function
+    event_map = {
+        'payment_intent.succeded': handler.handle_payment_intent_succeded,
+        'payment_intent.payment_failed': handler.handle_payment_intent_payment_failed,
+        'customer.created': handler.handle_customer_created,
+        'customer.subscription.created': handler.handle_customer_subscription_created,
+    }
+
+    # Get the webhook type from Strip
+    event_type = event['type']
+
+    # If there's a handler for it, get it from the vent map
+    # Use the generic one by default
+    event_handler = event_map.get(event_type, handler.handle_event)
+
+    # Call the event handler with the vent
+    response = event_handler(event)
+    return response
