@@ -18,5 +18,3 @@ class User(AbstractUser):
         help_text="The user's Stripe Subscription object, if it exists",
         related_name='topic_content_type'
     )
-
-    test = models.CharField(max_length=255, blank=True)

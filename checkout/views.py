@@ -64,8 +64,9 @@ def create_subscription(request):
             print(subscription)
             djstripe_subscription = djstripe.models.Subscription.sync_from_stripe_data(subscription)
             request.user.subscription = djstripe_subscription
-          
+
             request.user.save()
+
 
             return JsonResponse(subscription)
         except Exception as e:
