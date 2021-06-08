@@ -60,11 +60,10 @@ function planSelect(name, price, priceId) {
     var inputs = document.getElementsByTagName('input');
     // loop over the inputs and find one that has same name value
     for(var i = 0; i<inputs.length; i++){
-      inputs[i].checked = false;
-      if(inputs[i].name== name){
-
-        inputs[i].checked = true;
-      }
+        inputs[i].checked = false;
+        if(inputs[i].name== name){
+            inputs[i].checked = true;
+        }
     }
 
     var n = document.getElementById('plan');
@@ -73,7 +72,7 @@ function planSelect(name, price, priceId) {
     n.innerHTML = name;
     p.innerHTML = price;
     pid.innerHTML = priceId;
-        document.getElementById("subscribe").disabled = false;
+    document.getElementById("subscribe").disabled = false;
 }
 
 let paymentForm = document.getElementById('subscription-form');
@@ -81,7 +80,7 @@ let paymentForm = document.getElementById('subscription-form');
         paymentForm.addEventListener('submit', function (evt) {
             evt.preventDefault();
             card.update({ 'disabled': true});
-            $().attr('#subscribe').attr('disabled', true)
+            document.getElementById("subscribe").disabled = true;
             // create new payment method & create subscription
             createPaymentMethod({ card });
         });
@@ -89,7 +88,10 @@ let paymentForm = document.getElementById('subscription-form');
 
 function createPaymentMethod({ card }) {
 // Set up payment method for recurring usage
-    let billingName = '{{user.username}}';
+    let billingName = document.getElementById('name').innerHTML;
+    console.log(billingName);
+    let email = document.getElementById('email').innerHTML;
+    console.log(email);
 
     stripe
         .createPaymentMethod({
@@ -97,6 +99,7 @@ function createPaymentMethod({ card }) {
             card: card,
             billing_details: {
                 name: billingName,
+                email: email,
             },
         }).then((result) => {
             if (result.error) {

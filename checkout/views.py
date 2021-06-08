@@ -28,14 +28,12 @@ def checkout(request):
 
 @login_required
 def create_subscription(request):
-    if request.method == 'GET':
-        pass
-    else:
+    if request.method == 'POST':
         # Reads application/json and returns a response
 
         data = json.loads(request.body)
         payment_method = data['payment_method']
-        stripe.api_key = djstripe.settings.STRIPE_TEST_SECRET_KEY
+        stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
 
         payment_method_obj = stripe.PaymentMethod.retrieve(payment_method)
         djstripe.models.PaymentMethod.sync_from_stripe_data(payment_method_obj)

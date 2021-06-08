@@ -18,7 +18,7 @@
                 <h2 class="titles">Videos</h2>
                 <hr style="height:1px;border: width 2px;color:#01016F;;background-color:#01016F;">
             </div>
-        </div> 
+        </div>
         <div class="row">
             <div class="col-12 col-md-6 order-md-first">
                 <p class="text-muted mt-3 text-center text-md-left">
@@ -35,33 +35,33 @@
                     {% for video in videos %}
                     <div class="col">
                         <div class="card h-100">
-                          <img src="#" class="card-img-top" alt="Ashtanga Video - 01">
-                          <div class="card-body">
-                            <a href="{% url 'video_detail' video.id %}"> 
-                                <h6 class="card-title">{{ video }}</h6>
-                                <p class="card-text">{{ video.description }}</p>
-                                <ul class="list-inline">
-                                    {% if video.rating %}
-                                    <li class="list-inline-item">
+                            <img src="{{ video.thumbnail.url }}" class="card-img-top" alt="Ashtanga Video - 01">
+                            <div class="card-body">
+                                <a href="{% url 'video_detail' video.id %}"> 
+                                    <h6 class="card-title">{{ video }}</h6>
+                                    <p class="card-text">{{ video.description }}</p>
+                                    <ul class="list-inline">
+                                        {% if video.rating %}
+                                        <li class="list-inline-item">
                                             <small class="text-muted">{{ video.rating }} / 5.00</small>
-                                    </li>
-                                    {% else %}
-                                    <small class="text-muted">No rating</small>
-                                    {% endif %}
-                                    
+                                        </li>
+                                        {% else %}
+                                        <small class="text-muted">No rating</small>
+                                        {% endif %}
+                                        
+                                        <li class="list-inline-item">
+                                            <small class="text-muted">{{ video.duration }}</small>  
+                                        </li>
+                                    </ul>
+                                </a> 
+                                <ul class="list-inline">  
                                     <li class="list-inline-item">
-                                        <small class="text-muted">{{ video.duration }}</small>  
+                                        {% for category in video.category.all %}
+                                            <a href="{% url 'videos' %}?category={{ category.name }}"><small class="text-muted">{{ category }}</small></a>
+                                        {% endfor %}
                                     </li>
                                 </ul>
-                            </a> 
-                            <ul class="list-inline">  
-                                <li class="list-inline-item">
-                                    {% for category in video.category.all %}
-                                        <a href="{% url 'videos' %}?category={{ category.name }}"><small class="text-muted">{{ category }}</small></a>
-                                    {% endfor %}
-                                </li>
-                            </ul>
-                          </div>
+                            </div>
                         </div>
                     </div>
                     {% endfor %}

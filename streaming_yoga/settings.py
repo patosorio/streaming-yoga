@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'videos',
     'membership',
     'checkout',
+    'users',
 
     # django crispy forms
 
@@ -102,6 +103,8 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+AUTH_USER_MODEL = 'users.User'
 
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
@@ -187,5 +190,4 @@ DJSTRIPE_WEBHOOK_SECRET = "whsec_xxx"  # We don't use this, but it must be set
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 # HINT: On Django 3.1+, setting DJSTRIPE_USE_NATIVE_JSONFIELD = True is recommended.
 DJSTRIPE_USE_NATIVE_JSONFIELD = True
-
 
